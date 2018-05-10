@@ -46,6 +46,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    self.title = @"双击切换摄像头，单点聚焦";
     [self clearFile];
     [self setUp];
     
