@@ -218,9 +218,6 @@
     //预览图层和视频方向保持一致
     [_captureVideoPreviewLayer connection].videoOrientation = (AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation];
     captureConnection.videoOrientation = (AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation];
-    
-    
-    [self addNotificationToCaptureDevice:captureDevice];
 }
 
 #pragma mark - 计时器
@@ -281,72 +278,7 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-#pragma mark - Notification
 
--(void)addNotificationToCaptureDevice:(AVCaptureDevice *)captureDevice
-{
-//    //注意添加区域改变捕获通知必须首先设置设备允许捕获
-//    [self changeDeviceProperty:^(AVCaptureDevice *captureDevice) {
-//        captureDevice.subjectAreaChangeMonitoringEnabled = YES;
-//    }];
-//    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-//    //捕获区域发生改变
-//    [notificationCenter addObserver:self selector:@selector(areaChange:) name:AVCaptureDeviceSubjectAreaDidChangeNotification object:captureDevice];
-//    [notificationCenter addObserver:self selector:@selector(deviceConnected:) name:AVCaptureDeviceWasConnectedNotification object:captureDevice];
-//    [notificationCenter addObserver:self selector:@selector(deviceDisconnected:) name:AVCaptureDeviceWasDisconnectedNotification object:captureDevice];
-}
--(void)removeNotificationFromCaptureDevice:(AVCaptureDevice *)captureDevice
-{
-//    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-//    [notificationCenter removeObserver:self name:AVCaptureDeviceSubjectAreaDidChangeNotification object:captureDevice];
-//    [notificationCenter removeObserver:self name:AVCaptureDeviceWasConnectedNotification object:captureDevice];
-//    [notificationCenter removeObserver:self name:AVCaptureDeviceWasDisconnectedNotification object:captureDevice];
-}
-
--(void)addNotificationToCaptureSession:(AVCaptureSession *)captureSession
-{
-//    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-//    //会话出错
-//    [notificationCenter addObserver:self selector:@selector(sessionRuntimeError:) name:AVCaptureSessionRuntimeErrorNotification object:captureSession];
-}
-
-/**
- *  设备连接成功
- *
- *  @param notification 通知对象
- */
--(void)deviceConnected:(NSNotification *)notification
-{
-    NSLog(@"设备已连接...");
-}
-/**
- *  设备连接断开
- *
- *  @param notification 通知对象
- */
--(void)deviceDisconnected:(NSNotification *)notification
-{
-    NSLog(@"设备已断开.");
-}
-/**
- *  捕获区域改变
- *
- *  @param notification 通知对象
- */
--(void)areaChange:(NSNotification *)notification
-{
-    NSLog(@"捕获区域改变...");
-}
-
-/**
- *  会话出错
- *
- *  @param notification 通知对象
- */
--(void)sessionRuntimeError:(NSNotification *)notification
-{
-    NSLog(@"会话发生错误.");
-}
 
 #pragma mark - Helper
 
@@ -516,7 +448,6 @@
 {
     AVCaptureDevice *currentDevice = [self.captureDeviceInput device];
     AVCaptureDevicePosition currentPosition = [currentDevice position];
-    [self removeNotificationFromCaptureDevice:currentDevice];
     
     AVCaptureDevice *toChangeDevice;
     AVCaptureDevicePosition toChangePosition = AVCaptureDevicePositionFront;
@@ -528,7 +459,6 @@
         NSLog(@"切换摄像头失败");
         return;
     }
-    [self addNotificationToCaptureDevice:toChangeDevice];
     //获得要调整的设备输入对象
     AVCaptureDeviceInput *toChangeDeviceInput = [[AVCaptureDeviceInput alloc]initWithDevice:toChangeDevice error:nil];
     
